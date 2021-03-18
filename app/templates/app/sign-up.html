@@ -1,0 +1,46 @@
+{% extends 'app/layout.html' %}
+
+{% block title %}
+  {{title}}
+{% endblock %}
+
+{% block body %}
+    <h1>Sign Up</h1>
+    <div class="row">
+    	<div class="col">
+    		<form action="/sign-up" method="POST">
+				{% csrf_token %}
+				<div class="mb-3">
+			    <label for="name" class="form-label">Name</label>
+			    <input type="text" class="form-control" name="name" id="name" aria-describedby="emailHelp">
+			  </div>
+			  <div class="mb-3">
+			    <label for="email" class="form-label">Email address</label>
+			    <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp">
+			  </div>
+			  <div class="mb-3">
+			    <label for="pwd" class="form-label">Password</label>
+			    <input type="password" class="form-control" name="pwd" id="pwd">
+			  </div>
+			  <div class="mb-3">
+			    <label for="confirm_pwd" class="form-label">Confirm Password</label>
+			    <input type="password" class="form-control" name="confirm_pwd" id="confirm_pwd">
+			  </div>
+			  <button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+    	</div>
+    	<div class="col">
+    		{% if messages %}
+				<div class="alert alert-danger" role="alert">
+					<ul class="messages">
+					    {% for message in messages %}
+					    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					    {% endfor %}
+					</ul>
+				</div>
+			{% endif %}
+    	</div>
+
+    </div>
+
+{% endblock %}
