@@ -47,6 +47,9 @@ def sign_in(request):
 			messages.error(request, 'No Mail')
 			return redirect('/sign-in')
 		this_user = User.objects.filter(email=request.POST['email'])
+		if not this_user:
+			messages.error(request, 'Incorrect email or password')
+			return redirect('/sign-in')
 		if this_user:
 			this_user = this_user[0]
 			if bcrypt.checkpw(request.POST['pwd'].encode(), this_user.password.encode()):
@@ -61,3 +64,9 @@ def sign_in(request):
 def logout(request):
 	request.session.delete()
 	return redirect('/')
+
+def other(request):
+	content = {
+		'title' : 'Other'
+	}
+	return render(request,'app/other.html',content)
