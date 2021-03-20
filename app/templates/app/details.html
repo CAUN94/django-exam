@@ -1,0 +1,53 @@
+{% extends 'app/layout.html' %}
+
+{% block title %}
+  {{title}}
+{% endblock %}
+
+{% block body %}
+	{% if request.session.id > 0 %}
+		<div class="card my-3">
+				<div class="card-header">
+					Author: {{thought.user.first_name}} {{thought.user.last_name}}
+					{% if request.session.id == thought.user.id %}
+						<a href="/thought/delete/{{thought.id}}" class="float-right" onclick="return confirm('Are you sure?')">Delete</a>
+					{% endif %}
+				</div>
+				<div class="card-body">
+					<blockquote class="blockquote mb-0">
+					<p>{{thought.thought}}</p>
+					<footer class="float-right">
+						{% if liked %}
+							<a class="btn btn-outline-success" href="/like/{{thought.id}}">Like</a>
+						{% else %}
+							<a class="btn btn-outline-warning" href="/unlike/{{thought.id}}">Unlike</a>
+						{% endif %}
+					</footer>
+					</blockquote>
+				</div>
+			</div>
+			<h2>Liked by</h2>
+			<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">First Name</th>
+					<th scope="col">Last Name</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for user in users %}
+				 <tr>
+			      <td>{{user.user.first_name}}</td>
+			      <td>{{user.user.last_name}}</td>
+			    </tr>
+			{% endfor %}
+			{% if owner %}
+				<tr>
+			      <td>{{owner.first_name}}</td>
+			      <td>{{owner.last_name}}</td>
+			    </tr>
+			{% endif %}
+			</tbody>
+
+	{% endif %}
+{% endblock %}

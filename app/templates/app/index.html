@@ -5,9 +5,61 @@
 {% endblock %}
 
 {% block body %}
-	{% if request.session.id > 0 %}
-		<h1>Hello {{name}}</h1>
-	{% else  %}
-	   <h1>Hello Exam</h1>
-	{% endif %}
+	<h1>{{title}}</h1>
+	<div class="row">
+		<div class="col">
+			{% if messages %}
+			<div class="alert alert-danger" role="alert">
+					<ul class="messages">
+					    {% for message in messages %}
+					    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					    {% endfor %}
+					</ul>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col mt-1">
+			<form action="/sign-up" method="POST">
+				{% csrf_token %}
+			<div class="mb-3">
+			    <label for="first_name" class="form-label">First Name</label>
+			    <input type="text" class="form-control" name="first_name" id="first_name">
+			</div>
+			<div class="mb-3">
+			    <label for="last_name" class="form-label">Last Name</label>
+			    <input type="text" class="form-control" name="last_name" id="last_name">
+			</div>
+			<div class="mb-3">
+			    <label for="email" class="form-label">Email address</label>
+			    <input type="email" class="form-control" name="email" id="email">
+			</div>
+			<div class="mb-3">
+			    <label for="pwd" class="form-label">Password</label>
+			    <input type="password" class="form-control" name="pwd" id="pwd">
+			</div>
+			<div class="mb-3">
+			    <label for="confirm_pwd" class="form-label">Confirm Password</label>
+			    <input type="password" class="form-control" name="confirm_pwd" id="confirm_pwd">
+			</div>
+			  <button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+			</div>
+
+			<div class="col mt-1">
+			<form action="/sign-in" method="POST">
+				{% csrf_token %}
+			<div class="mb-3">
+				<label for="email" class="form-label">Email address</label>
+				<input type="email" class="form-control" name="email" id="email">
+			</div>
+			<div class="mb-3">
+				<label for="pwd" class="form-label">Password</label>
+				<input type="password" class="form-control" name="pwd" id="pwd">
+			</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</div>
 {% endblock %}

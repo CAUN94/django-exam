@@ -1,0 +1,49 @@
+{% extends 'app/layout.html' %}
+
+{% block title %}
+  {{title}}
+{% endblock %}
+
+{% block body %}
+	{% if request.session.id > 0 %}
+		<h1>Hello {{name}}</h1>
+		<form action="/thought/add" method="POST">
+			{% csrf_token %}
+			<div class="mb-3">
+				<label for="thought" class="form-label"><h2>Other Thought</h2></label>
+				<textarea class="form-control" name="thought" id="thought" rows="3"></textarea>
+			</div>
+			{% if messages %}
+				<div class="alert alert-danger" role="alert">
+						<ul class="messages">
+						    {% for message in messages %}
+						    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+						    {% endfor %}
+						</ul>
+				</div>
+			{% endif %}
+			<button type="submit" class="btn btn-primary my-3 d-inline float-right">Post</button>
+		</form>
+		<div class="clearfix"></div>
+
+		{% for thought in thoughts %}
+			<div class="card my-3">
+				<div class="card-header">
+					Author: {{thought.user.first_name}} {{thought.user.last_name}}
+					{% if request.session.id == thought.user.id %}
+						<a href="/thought/delete/{{thought.id}}" class="float-right" onclick="return confirm('Are you sure?')">Delete</a>
+					{% endif %}
+				</div>
+				<div class="card-body">
+					<blockquote class="blockquote mb-0">
+					<p>{{thought.thought}}</p>
+					<footer class="blockquote-footer">
+						<a href="/details/{{thought.id}}">Details</a>
+						<span class="float-right">Likes: {{thought.count}}</span>
+					</footer>
+					</blockquote>
+				</div>
+			</div>
+		{% endfor %}
+	{% endif %}
+{% endblock %}
